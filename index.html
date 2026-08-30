@@ -40,12 +40,17 @@
   .brand-name{color:#fff; font-weight:800; font-size:14px; letter-spacing:.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .brand-sub{color:rgba(255,255,255,.62); font-size:9px; letter-spacing:.2px;}
   .header-tabs{position:relative; z-index:3; display:flex; gap:6px;}
-  .tab{color:rgba(255,255,255,.78); font-size:12px; padding:8px 14px; cursor:default; border-radius:8px; transition:all .2s; user-select:none; font-weight:600; white-space:nowrap;}
+  .tab{color:rgba(255,255,255,.78); font-size:12px; padding:8px 14px; cursor:pointer; border-radius:8px; transition:all .2s; user-select:none; font-weight:600; white-space:nowrap;}
+  .tab:hover{color:#fff; background:rgba(255,255,255,.12);}
+  .tab.active{background:#fff; color:var(--red2); box-shadow:0 2px 10px rgba(0,0,0,.18); font-weight:700;}
   .tab b{color:#fff;}
+  .tab.active b{color:var(--red2);}
   .header-right{position:relative; z-index:3; display:flex; align-items:center; gap:8px;}
   .mid-fest{color:rgba(255,255,255,.6); font-size:11px; margin-right:6px; letter-spacing:.3px; white-space:nowrap;}
   .r18-count{color:rgba(255,255,255,.82); font-size:11px; margin-right:4px; max-width:340px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .r18-count b{color:#fff;}
+  .r18-meta{color:rgba(255,255,255,.82); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:380px;}
+  .r18-meta b{color:#fff;}
   .r18-back{background:#fff; color:var(--red2); border:none; border-radius:8px; padding:8px 14px; font-size:11px; cursor:pointer; font-weight:700; transition:all .15s; box-shadow:0 2px 8px rgba(0,0,0,.16); flex-shrink:0;}
   .r18-back:hover{background:#FCE4E4; box-shadow:0 3px 12px rgba(0,0,0,.2);}
   @media (max-width:1280px){ .mid-fest{display:none;} }
@@ -102,12 +107,14 @@
     </div>
   </div>
   <div class="header-tabs">
-    <div class="tab"><span>Đơn vị: <b>Mega Market</b></span></div>
-    <div class="tab"><span>Cửa hàng: <b>10050-MMDP50</b></span></div>
-    <div class="tab"><span>Ngày báo cáo: <b>29-Aug-26</b></span></div>
+    <div class="tab" data-tab="sc">SC · Stock Correction</div>
+    <div class="tab" data-tab="minus">Minus Stock</div>
+    <div class="tab" data-tab="day">Day Receive Detail</div>
+    <div class="tab" data-tab="top50">TOP 50 Sales</div>
+    <div class="tab active">RPT18</div>
   </div>
   <div class="header-right">
-    <span class="mid-fest">🌕 Red Moon · 🐇 Jade Rabbit</span>
+    <span class="r18-meta">Đơn vị: <b>Mega Market</b> · Cửa hàng: <b>10050-MMDP50</b> · Ngày: <b>29-Aug-26</b></span>
     <span class="r18-count">Số dòng dữ liệu: <b id="srcCount">0</b></span>
     <button class="r18-back" id="r18Back" onclick="r18BackGo()">← Quay về trang 1</button>
   </div>
@@ -243,6 +250,17 @@ function r18BackGo(){
 (function(){
   var b = document.getElementById('r18Back');
   if (b && window.self === window.top) b.style.display = 'none';
+  var embedded = window.self !== window.top;
+  if (embedded){
+    document.querySelectorAll('#topHeader .header-tabs .tab').forEach(function(t){
+      var tab = t.getAttribute('data-tab');
+      if (tab){
+        t.addEventListener('click', function(){
+          window.parent.postMessage({type:'r18NavTab', tab: tab}, '*');
+        });
+      }
+    });
+  }
 })();
 </script>
 </body>
