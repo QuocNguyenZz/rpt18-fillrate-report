@@ -107,11 +107,7 @@
     </div>
   </div>
   <div class="header-tabs">
-    <div class="tab" data-tab="sc">SC · Stock Correction</div>
-    <div class="tab" data-tab="minus">Minus Stock</div>
-    <div class="tab" data-tab="day">Day Receive Detail</div>
-    <div class="tab" data-tab="top50">TOP 50 Sales</div>
-    <div class="tab active">RPT18</div>
+    <div class="tab active">RPT18 · Item Line Fill Rate Report</div>
   </div>
   <div class="header-right">
     <span class="r18-meta">Đơn vị: <b>Mega Market</b> · Cửa hàng: <b>10050-MMDP50</b> · Ngày: <b>29-Aug-26</b></span>
@@ -243,25 +239,13 @@ function r18BackGo(){
     if (window.self !== window.top){
       window.parent.postMessage({type:'r18Close'}, '*');
     } else if (window.opener && !window.opener.closed){
+      window.opener.focus();
       window.close();
+    } else {
+      window.location.href = encodeURI('file:///C:/Users/Admin/Documents/Default Project/Day Receive Detail Report.html');
     }
   }catch(e){}
 }
-(function(){
-  var b = document.getElementById('r18Back');
-  if (b && window.self === window.top) b.style.display = 'none';
-  var embedded = window.self !== window.top;
-  if (embedded){
-    document.querySelectorAll('#topHeader .header-tabs .tab').forEach(function(t){
-      var tab = t.getAttribute('data-tab');
-      if (tab){
-        t.addEventListener('click', function(){
-          window.parent.postMessage({type:'r18NavTab', tab: tab}, '*');
-        });
-      }
-    });
-  }
-})();
 </script>
 </body>
 </html>
